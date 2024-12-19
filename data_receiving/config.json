@@ -1,0 +1,249 @@
+{
+  "production": {
+    "start": false,
+    "execution_mode": {
+      "sequential": {
+        "status": false,
+        "on_failure": "continue"
+      },
+      "parallel": {
+        "status": false,
+        "max_threads": 5,
+        "on_failure": "retry"
+      },
+      "specific_order": {
+        "status": false,
+        "order": [
+          "csv",
+          "json",
+          "mongodb",
+          "s3",
+          "tsv",
+          "xml",
+          "spark"
+        ],
+        "on_failure": "skip"
+      }
+    },
+    "data_sources": [
+      {
+        "type": "csv",
+        "path": "/path/to/file.csv",
+        "delimiter": ",",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "tsv",
+        "path": "/path/to/file.tsv",
+        "delimiter": "\t",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "json",
+        "path": "/path/to/file.json",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "xml",
+        "path": "/path/to/file.xml",
+        "encoding": "utf-8",
+        "root_element": "root",
+        "row_element": "row"
+      },
+      {
+        "type": "s3",
+        "bucket": "my-bucket-name",
+        "prefix": "folder/subfolder/",
+        "aws_access_key_id": "YOUR_AWS_ACCESS_KEY_ID",
+        "aws_secret_access_key": "YOUR_AWS_SECRET_ACCESS_KEY",
+        "region": "us-west-2"
+      },
+      {
+        "type": "mongodb",
+        "host": "localhost",
+        "port": 27017,
+        "database": "my_db",
+        "collection": "my_collection",
+        "username": "user",
+        "password": "pass"
+      },
+      {
+        "type": "spark",
+        "master": "spark://localhost:7077",
+        "app_name": "MySparkApp",
+        "jar": "/path/to/spark-app.jar",
+        "config": {
+          "spark.executor.memory": "4g",
+          "spark.driver.memory": "2g"
+        }
+      }
+    ],
+    "logging": {
+      "level": "INFO",
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+      "file": "/path/to/production/logfile.log",
+      "max_file_size": "10MB",
+      "backup_count": 3
+    }
+  },
+  "development": {
+    "start": true,
+    "execution_mode": {
+      "sequential": {
+        "status": true,
+        "on_failure": "continue"
+      },
+      "parallel": {
+        "status": true,
+        "max_threads": 2,
+        "on_failure": "skip"
+      },
+      "specific_order": {
+        "status": false,
+        "order": [
+          "csv",
+          "json",
+          "s3",
+          "mongodb"
+        ],
+        "on_failure": "continue"
+      }
+    },
+    "data_sources": [
+      {
+        "type": "csv",
+        "path": "/dev/path/to/file.csv",
+        "delimiter": ",",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "json",
+        "path": "/dev/path/to/file.json",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "s3",
+        "bucket": "dev-bucket-name",
+        "prefix": "folder/dev/",
+        "aws_access_key_id": "DEV_AWS_ACCESS_KEY_ID",
+        "aws_secret_access_key": "DEV_AWS_SECRET_ACCESS_KEY",
+        "region": "us-west-2"
+      },
+      {
+        "type": "mongodb",
+        "host": "localhost",
+        "port": 27017,
+        "database": "dev_db",
+        "collection": "dev_collection",
+        "username": "dev_user",
+        "password": "dev_pass"
+      }
+    ],
+    "logging": {
+      "level": "DEBUG",
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+      "file": "log_files/logfile.log",
+      "max_file_size": "5MB",
+      "backup_count": 2
+    }
+  },
+  "test": {
+    "start": false,
+    "execution_mode": {
+      "sequential": {
+        "status": false,
+        "on_failure": "skip"
+      },
+      "parallel": {
+        "status": false,
+        "max_threads": 3,
+        "on_failure": "retry"
+      },
+      "specific_order": {
+        "status": false,
+        "order": [
+          "csv",
+          "mongodb",
+          "s3"
+        ],
+        "on_failure": "continue"
+      }
+    },
+    "data_sources": [
+      {
+        "type": "csv",
+        "path": "/test/path/to/file.csv",
+        "delimiter": ",",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "mongodb",
+        "host": "localhost",
+        "port": 27017,
+        "database": "test_db",
+        "collection": "test_collection",
+        "username": "test_user",
+        "password": "test_pass"
+      },
+      {
+        "type": "s3",
+        "bucket": "test-bucket-name",
+        "prefix": "folder/test/",
+        "aws_access_key_id": "TEST_AWS_ACCESS_KEY_ID",
+        "aws_secret_access_key": "TEST_AWS_SECRET_ACCESS_KEY",
+        "region": "us-east-1"
+      }
+    ],
+    "logging": {
+      "level": "WARNING",
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+      "file": "/path/to/test/logfile.log",
+      "max_file_size": "2MB",
+      "backup_count": 1
+    }
+  },
+  "support": {
+    "start": false,
+    "execution_mode": {
+      "sequential": {
+        "status": false,
+        "on_failure": "skip"
+      },
+      "parallel": {
+        "status": false,
+        "max_threads": 1,
+        "on_failure": "skip"
+      },
+      "specific_order": {
+        "status": false,
+        "order": [
+          "tsv",
+          "xml"
+        ],
+        "on_failure": "skip"
+      }
+    },
+    "data_sources": [
+      {
+        "type": "tsv",
+        "path": "/support/path/to/file.tsv",
+        "delimiter": "\t",
+        "encoding": "utf-8"
+      },
+      {
+        "type": "xml",
+        "path": "/support/path/to/file.xml",
+        "encoding": "utf-8",
+        "root_element": "root",
+        "row_element": "row"
+      }
+    ],
+    "logging": {
+      "level": "ERROR",
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+      "file": "/path/to/support/logfile.log",
+      "max_file_size": "1MB",
+      "backup_count": 1
+    }
+  }
+}
